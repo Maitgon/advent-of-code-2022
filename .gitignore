@@ -44,3 +44,8 @@ go.work
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,go
+
+# Added this myself to exclude no extension files
+*
+!*/
+!*.*
