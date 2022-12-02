@@ -7,3 +7,4 @@ Another year, another advent with Go.
 | Days | Time |
 | :----: | :----: |
 | Day 1 | 515&mu;s |
+| Day 2 | 5.8 ms |
