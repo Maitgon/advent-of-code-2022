@@ -16,14 +16,11 @@ func Solve() {
 	// Input reading
 	bs, err := ioutil.ReadFile("./days/day02/input.txt")
 
-	fmt.Println(err)
-
 	if err != nil {
 		bs, _ = ioutil.ReadFile("input.txt")
 	}
 
 	input := strings.Split(string(bs), "\n")
-	fmt.Println(input)
 
 	sol1 := combatAll(input)
 	sol2 := combatAll2(input)
@@ -61,8 +58,6 @@ func combat(clash string) int {
 		clash[0] == 'C' && clash[2] == 'X' {
 		result += 6
 	}
-
-	fmt.Println(clash, result)
 
 	return result
 }
