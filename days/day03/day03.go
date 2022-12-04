@@ -37,7 +37,7 @@ func part1(input []string) (total int) {
 	total = 0
 	for _, rucksack := range input {
 		mid := len(rucksack) / 2
-		letter := utils.Intersection([]byte(rucksack[0:mid]), ([]byte(rucksack[mid:len(rucksack)])))[0]
+		letter := utils.Intersection([]byte(rucksack[0:mid]), ([]byte(rucksack[mid:])))[0]
 		total += getValue(letter)
 	}
 	return
