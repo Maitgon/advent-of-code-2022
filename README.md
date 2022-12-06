@@ -11,3 +11,4 @@ Another year, another advent with Go.
 | Day 3 | 2.003ms |
 | Day 4 | 3.028ms |
 | Day 5 | 286&mu;s |
+| Day 6 | 1.423ms |

@@ -75,3 +75,12 @@ func (s Stack[T]) Values() {
 		fmt.Printf("%v ", s[i])
 	}
 }
+
+// Checks if a slice is unique using hash tables
+func Unique[T comparable](s []T) bool {
+	set := map[T]bool{}
+	for _, c := range s {
+		set[c] = true
+	}
+	return len(set) == len(s)
+}
