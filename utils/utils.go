@@ -84,3 +84,11 @@ func Unique[T comparable](s []T) bool {
 	}
 	return len(set) == len(s)
 }
+
+func Map[T, F any](vals []T, f func(T) F) []F {
+	res := make([]F, len(vals))
+	for i, val := range vals {
+		res[i] = f(val)
+	}
+	return res
+}
