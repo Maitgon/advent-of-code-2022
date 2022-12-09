@@ -1,9 +1,9 @@
 package main
 
 import (
-	"AOC2022-Go/days/day08"
+	"AOC2022-Go/days/day09"
 )
 
 func main() {
-	day08.Solve()
+	day09.Solve()
 }
