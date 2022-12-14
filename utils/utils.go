@@ -5,6 +5,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"strconv"
 )
 
 // This package contains functions that could be used in multiple days
@@ -91,4 +92,140 @@ func Map[T, F any](vals []T, f func(T) F) []F {
 		res[i] = f(val)
 	}
 	return res
+}
+
+// Queue implementation
+
+type Queue[T any] []T
+
+func (q *Queue[T]) Put(x T) {
+	*q = append(*q, x)
+}
+
+func (q *Queue[T]) Get() T {
+	ret := (*q)[0]
+	*q = (*q)[1:]
+
+	return ret
+}
+
+func (q *Queue[T]) Empty() bool {
+	return len(*q) == 0
+}
+
+func Make2D[T any](n, m int) [][]T {
+	matrix := make([][]T, n)
+	rows := make([]T, n*m)
+	for i, startRow := 0, 0; i < n; i, startRow = i+1, startRow+m {
+		endRow := startRow + m
+		matrix[i] = rows[startRow:endRow:endRow]
+	}
+	return matrix
+}
+
+// Integer trees, mamma mia
+type Tree struct {
+	Val  int
+	Tree *[]Tree
+	Deep int
+}
+
+func ParseTree(input *string) Tree {
+	pointer := 0
+	return ParseTreeAux(input, 0, &pointer)
+}
+
+// Parse trees from: "[[1,2],3,[],[[3],2]]"
+func ParseTreeAux(input *string, deep int, p *int) Tree {
+	//fmt.Println(*p)
+	val := string((*input)[*p])
+	var treeSol Tree
+	treeSol.Deep = deep
+	//fmt.Println(val)
+	//fmt.Println(deep)
+
+	// If the token is ",", we skip it
+	if val == "," {
+		*p++
+	}
+
+	switch val {
+	// If the token is "[" we want to start another treeParse
+	case "[":
+		treeSol.Val = -1
+		treeSol.Tree = &[]Tree{}
+		if string((*input)[*p+1]) != "]" {
+			for string((*input)[*p]) != "]" {
+				*p++
+				*treeSol.Tree = append(*treeSol.Tree, ParseTreeAux(input, deep+1, p))
+			}
+		} else {
+			*p++
+		}
+		// This should be "]", so skip it
+		*p++
+
+	// If it goes here, then it is a number
+	default:
+		//Check if next is a number
+		if _, err := strconv.Atoi(string((*input)[*p+1])); err == nil {
+			*p++
+			val = val + string((*input)[*p])
+		}
+		//fmt.Println("ok")
+		num, _ := strconv.Atoi(val)
+		treeSol.Val = num
+		treeSol.Tree = nil
+		*p++
+	}
+	return treeSol
+
+}
+
+func (t *Tree) Show() string {
+	if t.Tree == nil {
+		return fmt.Sprintf("%d", t.Val)
+	}
+
+	str := "["
+	if len(*t.Tree) != 0 {
+		for _, tree := range *t.Tree {
+			str += tree.Show() + ","
+		}
+		str = str[:len(str)-1]
+		str += "]"
+	} else {
+		str = "[]"
+	}
+	return str
+}
+
+func (t *Tree) IsVal() bool {
+	return t.Tree == nil
+}
+
+func (t *Tree) IsLeaf() bool {
+	return t.Tree != nil
+}
+
+func (t *Tree) IsDividerPacket() bool {
+	aux1 := *t.Tree
+	if len(aux1) == 1 {
+		aux2 := *aux1[0].Tree
+		if len(aux2) == 1 {
+			return aux2[0].Val == 2 || aux2[0].Val == 6
+		}
+	}
+	return false
+}
+
+// Transpose Matrix
+func Transpose[T any](a [][]T) [][]T {
+	newArr := make([][]T, len(a))
+	for i := 0; i < len(a); i++ {
+		for j := 0; j < len(a[0]); j++ {
+			newArr[j] = append(newArr[j], a[i][j])
+		}
+	}
+	return newArr
 }
