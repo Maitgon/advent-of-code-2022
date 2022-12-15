@@ -5,6 +5,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"sort"
 	"strconv"
 )
 
@@ -84,6 +85,19 @@ func Unique[T comparable](s []T) bool {
 		set[c] = true
 	}
 	return len(set) == len(s)
+}
+
+// Eliminate duplicates in a slice
+func UniqueConv[T comparable](s []T) []T {
+	inResult := make(map[T]bool)
+	var result []T
+	for _, str := range s {
+		if _, ok := inResult[str]; !ok {
+			inResult[str] = true
+			result = append(result, str)
+		}
+	}
+	return result
 }
 
 func Map[T, F any](vals []T, f func(T) F) []F {
@@ -228,4 +242,40 @@ func Transpose[T any](a [][]T) [][]T {
 		}
 	}
 	return newArr
+}
+
+//INTervals
+
+type Interval struct {
+	L int
+	R int
+}
+
+func (i Interval) Show() string {
+	return fmt.Sprintf("(%d,%d)", i.L, i.R)
+}
+
+func SweepLine(intervals []Interval) []Interval {
+	sort.Slice(intervals, func(i, j int) bool { return intervals[i].L < intervals[j].L })
+	//fmt.Println(intervals)
+
+	cur := intervals[0]
+	//fmt.Println(cur, intervals[1:])
+	sol := []Interval{}
+	for _, x := range intervals[1:] {
+		//fmt.Println(cur, x)
+		if cur.R < x.L {
+			sol = append(sol, cur)
+			cur = x
+		} else if cur.R < x.R {
+			cur.R = x.R
+		}
+	}
+	sol = append(sol, cur)
+
+	return sol
+}
+
+func (i Interval) Len() int {
+	return i.R - i.L + 1
 }

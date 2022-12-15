@@ -20,3 +20,4 @@ Another year, another advent with Go.
 | Day 12 | 545&mu;s |
 | Day 13 | 1.493ms |
 | Day 14 | 5.614ms |
+| Day 15 | 4.274806s |
