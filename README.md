@@ -21,3 +21,5 @@ Another year, another advent with Go.
 | Day 13 | 1.493ms |
 | Day 14 | 5.614ms |
 | Day 15 | 4.274806s |
+| Day 16 | 187.626ms |
+| Day 17 | ????? |

@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type valve struct {
@@ -24,7 +25,7 @@ type path struct {
 
 func Solve() {
 
-	// start := time.Now()
+	start := time.Now()
 
 	// Input reading
 	bs, err := ioutil.ReadFile("./days/day16/input.txt")
@@ -43,8 +44,12 @@ func Solve() {
 	//fmt.Println(graph)
 
 	sol1, sol2 := part(input)
-	fmt.Println(sol1)
-	fmt.Println(sol2)
+
+	end := time.Since(start)
+
+	fmt.Println("The solution to part 1 is: ", sol1)
+	fmt.Println("The solution to part 2 is: ", sol2)
+	fmt.Println("Time: ", end)
 
 }
 
@@ -77,8 +82,8 @@ func floydWarshall(valves map[string]valve) map[string]map[string]byte {
 		}
 	}
 
-	fmt.Println(graph["AA"]["NC"])
-	fmt.Println(graph)
+	//fmt.Println(graph["AA"]["NC"])
+	//fmt.Println(graph)
 
 	return graph
 }
@@ -101,7 +106,7 @@ func parseInput(inputS []string) map[string]valve {
 func part(input map[string]valve) (int, int) {
 	// We create the graph
 	graph := floydWarshall(input)
-	fmt.Println(graph["AA"]["NC"])
+	//fmt.Println(graph["AA"]["NC"])
 
 	// We filter the valves that we are going to use
 	goodValves := []string{}
@@ -111,7 +116,7 @@ func part(input map[string]valve) (int, int) {
 		}
 	}
 
-	fmt.Println(goodValves)
+	//fmt.Println(goodValves)
 
 	// There are 16 gooValves so we can mask every valve as a bit of a uint16
 	bitMask := make(map[string]uint16)
@@ -177,7 +182,7 @@ func part(input map[string]valve) (int, int) {
 
 	paths := dfs2(26, 0, 0, "AA", 0)
 
-	fmt.Println(paths)
+	//fmt.Println(paths)
 
 	var reducedPaths []path
 	for _, p := range paths {
@@ -186,7 +191,7 @@ func part(input map[string]valve) (int, int) {
 		}
 	}
 
-	fmt.Println(reducedPaths)
+	//fmt.Println(reducedPaths)
 
 	sol2 := 0
 	for i := 0; i < len(reducedPaths); i++ {
@@ -204,27 +209,3 @@ func part(input map[string]valve) (int, int) {
 	return sol1, sol2
 
 }
-
-/*
-Go
-
-I originally solved today's problem with Python 3, but I wasn't happy that it took more than 1 second to solve, so I decided to use Go and attempt to eke out as much efficiency as I could. I got both parts including parsing the input file to under 100ms. I wanted to share some things I learned along the way.
-
-I started by finding the shortest path for all valves via floyd-warshall. Then I converted all valves to a bitfield (luckly there were 15 non-zero flow valves plus the starting valve, so everything fit nicely into a uint16). Then the flow rates and shortest paths were encoded in slices indexes.
-
-Part 1 used DFS, keeping track of the max pressure along the way.
-
-Part 2 used DFS again, returning all paths found (encoded in a bitfield). The paths were filtered to only include those with at least half the pressure from part 1, then compared all combinations to find the max pressure.
-
-Some interesting efficiency things I learned along the way:
-
-using bitfields makes things a lot faster and easier
-
-adding to a path or set is just path | newnode
-
-nodes become indexes to slices and can be OR'd for combined lookup: slice[v1|v2]
-
-encoding things in slices (e.g. slice index -> value) is much faster than map lookups. This was the biggest gains I got
-
-Raw iteration for combinations (i in range(0, max); j in range(i+1, max)) was much faster than using gonum's combination.
-*/
