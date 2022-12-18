@@ -32,6 +32,14 @@ func Min[T constraints.Ordered](e1, e2 T) T {
 	}
 }
 
+func Max[T constraints.Ordered](e1, e2 T) T {
+	if e1 > e2 {
+		return e1
+	} else {
+		return e2
+	}
+}
+
 // Intersects two generic slices using hash table
 func Intersection[T comparable](s1, s2 []T) (inter []T) {
 	hash := make(map[T]bool)
