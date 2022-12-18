@@ -7,9 +7,30 @@ import (
 	"log"
 	"sort"
 	"strconv"
+
+	"golang.org/x/exp/constraints"
 )
 
 // This package contains functions that could be used in multiple days
+
+// This function checks if an element belongs to a slice
+func Contains[T comparable](s []T, e T) bool {
+	for _, v := range s {
+		if v == e {
+			return true
+		}
+	}
+	return false
+}
+
+// This function checks the minimum between 2 values
+func Min[T constraints.Ordered](e1, e2 T) T {
+	if e1 < e2 {
+		return e1
+	} else {
+		return e2
+	}
+}
 
 // Intersects two generic slices using hash table
 func Intersection[T comparable](s1, s2 []T) (inter []T) {
