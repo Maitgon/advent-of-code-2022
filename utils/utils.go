@@ -107,6 +107,21 @@ func (s Stack[T]) Values() {
 	}
 }
 
+// Deep copy a map
+func CopyMap(m map[string]interface{}) map[string]interface{} {
+	cp := make(map[string]interface{})
+	for k, v := range m {
+		vm, ok := v.(map[string]interface{})
+		if ok {
+			cp[k] = CopyMap(vm)
+		} else {
+			cp[k] = v
+		}
+	}
+
+	return cp
+}
+
 // Checks if a slice is unique using hash tables
 func Unique[T comparable](s []T) bool {
 	set := map[T]bool{}
