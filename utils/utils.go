@@ -5,6 +5,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"runtime"
 	"sort"
 	"strconv"
 
@@ -129,6 +130,41 @@ func Unique[T comparable](s []T) bool {
 		set[c] = true
 	}
 	return len(set) == len(s)
+}
+
+// Check if a slice is sorted
+func isSorted[T constraints.Ordered](data []T) bool {
+	ch := make(chan bool)
+	numSegments := runtime.NumCPU()
+	segmentSize := int(float64(len(data)) / float64(numSegments))
+	// Launch numSegments goroutines
+	for index := 0; index < numSegments; index++ {
+		go isSegmentSorted(data, index*segmentSize,
+			index*segmentSize+segmentSize, ch)
+	}
+	num := 0 // Completed goroutines
+	for {
+		select {
+		case value := <-ch:
+			if !value {
+				return false
+			}
+			num += 1
+			if num == numSegments { // All goroutiines have completed
+				return true
+			}
+		}
+	}
+}
+
+func isSegmentSorted[T constraints.Ordered](data []T, a, b int, ch chan<- bool) {
+	// Generates boolean value put into ch
+	for i := a + 1; i < b; i++ {
+		if data[i] < data[i-1] {
+			ch <- false
+		}
+	}
+	ch <- true
 }
 
 // Eliminate duplicates in a slice
