@@ -28,3 +28,4 @@ Another year, another advent with Go.
 | Day 20 | 805.023ms |
 | Day 21 | 2.208ms |
 | Day 22 | 908&mu;s |
+| Day 23 | 1.169707s |
