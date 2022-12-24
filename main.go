@@ -1,7 +1,7 @@
 package main
 
-import "AOC2022-Go/days/day23"
+import "AOC2022-Go/days/day24"
 
 func main() {
-	day23.Solve()
+	day24.Solve()
 }
