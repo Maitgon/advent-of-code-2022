@@ -30,3 +30,4 @@ Another year, another advent with Go.
 | Day 22 | 908&mu;s |
 | Day 23 | 1.169707s |
 | Day 24 | 111.219ms |
+| Day 25 | 139&mu;s |
